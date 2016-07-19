@@ -1,0 +1,9 @@
+<aspectj>
+	<weaver>
+		<!-- package contain aspect class -->
+		<include within="com..*" />
+	</weaver>
+	<aspects>
+		<aspect name="com.spring.core9$10.$.afterthrow.TestUtils" />
+	</aspects>
+</aspectj>
