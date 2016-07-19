@@ -1,0 +1,22 @@
+package com_spring_core8_$_beanwraper;
+
+public class X {
+
+	public String x;
+
+	/**
+	 * @return the x
+	 */
+	public String getX() {
+		return x;
+	}
+
+	/**
+	 * @param x the x to set
+	 */
+	public void setX(String x) {
+		this.x = x;
+	}
+	
+	
+}
