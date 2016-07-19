@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+	<context:load-time-weaver aspectj-weaving="autodetect" weaver-class="com.spring.core9$10.$.around.LTW"/>
+
+	<!-- weaver-class="com.spring.core9$10.$.around.LWT" -->
+
+<!-- 	<aop:aspectj-autoproxy /> -->
+
+<!--     <context:component-scan base-package="com.spring.core9$10.$.around"/> -->
+
+	<context:annotation-config />
+	
+	<aop:aspectj-autoproxy>
+	    <aop:include name="com.spring.core9$10.$.afterthrow.TestUtils"/>
+	    <aop:include name="com.dtsc.helijobfair.main.server.utils.test.Test"/>
+	</aop:aspectj-autoproxy>
+	
+	<bean id="testUtils" class="com.spring.core9$10.$.afterthrow.TestUtils"></bean>
+	
+	<bean id="y" class="com.spring.core9$10.$.around.Y">
+		<property name="x" value="XXX" />
+	</bean>
+
+
+</beans>
