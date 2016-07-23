@@ -9,6 +9,11 @@ public class App {
 
 	/**
 	 * add javax mail
+	 * turn on google security if using server mail google: smtp.google.com: 
+	 * https://www.google.com/settings/security/lesssecureapps
+	 * if not authen, disable capcha:
+	 * https://accounts.google.com/b/0/DisplayUnlockCaptcha
+	 * 
 	 */
 	
 	public static void main(String[] args) {
