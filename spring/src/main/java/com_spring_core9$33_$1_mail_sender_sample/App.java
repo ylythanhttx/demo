@@ -17,10 +17,10 @@ public class App {
 		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:**/spring-33-1.xml");
 		MailSender mailSender = (MailSender) context.getBean("mailSender");
 		MailObject mailObject = new MailObject();
-		mailObject.setTo("ttx.facebook.uit@gmail.com");
-		mailObject.setFrom("ttx.facebook.uit@gmail.com");
+		mailObject.setTo("");
+		mailObject.setFrom("");
 		mailObject.setCc(null);
-		mailObject.setReplyTo("ttx.facebook.uit@gmail.com");
+		mailObject.setReplyTo("");
 		mailObject.setText("Test sendmail");
 		mailObject.setSubject("Test sendmail");
 		mailObject.setSentDate(new Date());
