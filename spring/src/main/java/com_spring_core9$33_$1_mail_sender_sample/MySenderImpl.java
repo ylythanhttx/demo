@@ -7,7 +7,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Component;
 
-@Component("mailSender")
+@Component("mySender")
 public class MySenderImpl implements MySender {
 
 	@Autowired
