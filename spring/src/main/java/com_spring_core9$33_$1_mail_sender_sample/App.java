@@ -20,7 +20,7 @@ public class App {
 
 		@SuppressWarnings("resource")
 		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:**/spring-33-1.xml");
-		MailSender mailSender = (MailSender) context.getBean("mailSender");
+		MySender mailSender = (MySender) context.getBean("mailSender");
 		MailObject mailObject = new MailObject();
 		mailObject.setTo("");
 		mailObject.setFrom("");
