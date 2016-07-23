@@ -1,4 +1,4 @@
-package com_spring_core9$33_$1_mail_sender_sample;
+package com_spring_core9$33_$2_mail_sender_mime_attach;
 
 import java.util.Date;
 
@@ -10,7 +10,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author thanh
  *
  */
-
 public class App {
 
 	/**
@@ -26,12 +25,12 @@ public class App {
 	public static void main(String[] args) {
 
 		@SuppressWarnings("resource")
-		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:**/spring-33-1.xml");
+		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:**/spring-33-2.xml");
 		MySender mailSender = (MySender) context.getBean("mySender");
 		MailObject mailObject = new MailObject();
 		mailObject.setTo("");
 		mailObject.setFrom("");
-		mailObject.setCc(null);
+		mailObject.setCc(new String[]{});
 		mailObject.setReplyTo("");
 		mailObject.setText("Test sendmail");
 		mailObject.setSubject("Test sendmail");
