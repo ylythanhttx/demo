@@ -1,6 +1,5 @@
 package com.ttx.apachepoidemo;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,18 +31,38 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STBorder;
 /**
  * Hello world!
  *
+ * <pre>
+ * 
+ * #Symbol trong word Chinh la ki tu dat biet trong java Character 
+ * Ex: System.out.println(new Character((char) 9668).toString());
+ * Tuong ung voi font system, va  Decima code trong phan insert 
+ * Symbol trong word
+ * Ex: Ki tu la bai bich (♠) = new Character((char) 9824).toString();
+ * la code Decima 9824 font Arial Linux (Ubuntu)
+ * 
+ * #To replace symbol:
+ * 1 Cell co 1 hoac nhieu paragraph (thuong chi co 1),
+ * 1 paragraph thuong co nhieu run [List<XWPFRun> xwpfRuns = xwpfParagraph.getRuns();]
+ * Tuong ung voi moi run thi getText -> cac chuoi, trong do co symbol
+ * Ex: Gia su symbol (♠) tai paragraphs[0] va xwpfRuns[1] 
+ * cell.getParagraphs().get(0).getRuns().get(1).setText(new Character((char) 8597).toString(), 0);
+ * 
+ * 
+ * </pre>
+ *
  */
 public class App {
 
 	static List<Map<String, Object>> styleRow = null;
 
+	@SuppressWarnings("resource")
 	public static void main(String[] args) throws IOException {
-		System.out.println("Hello World!");
 
-		FileInputStream fis = new FileInputStream("/home/thanh/Documents/Unit.docx");
+		System.out.println(new Character((char) 9824).toString());
+
+		FileInputStream fis = new FileInputStream("/home/thanh/Documents/TIFF-2QUESTION.docx");
 		XWPFDocument document = new XWPFDocument(fis);
 
-		// All body element
 		List<IBodyElement> lst = document.getBodyElements();
 
 		for (int i = 0; i < lst.size(); i++) {
@@ -51,67 +70,36 @@ public class App {
 			if (element instanceof XWPFParagraph) {
 				XWPFParagraph paragraph = (XWPFParagraph) element;
 
-				// System.out.println(paragraph.getText());
 				if (paragraph.getText().contains("Phone")) {
 					replaceTextInParagrap(paragraph, "Phone", "VLLLLL");
 				}
-			}
-		}
-
-		IBodyElement element = lst.get(0);
-
-		// Table in word
-		XWPFTable table = null;
-		if (element instanceof XWPFTable) {
-			table = (XWPFTable) element;
-		}
-		if (table != null) {
-			// Table text
-			// System.out.println(table.getText());
-			// rows in table
-			XWPFTableRow tableOneRowTwo = table.getRow(table.getNumberOfRows() - 1);
-
-			List<XWPFTableRow> rows = table.getRows();
-
-			XWPFTableRow rowLast = null;
-			if (rows.size() > 0) {
-				rowLast = rows.get(rows.size() - 1);
-			}
-
-			if (rowLast != null) {
-
-				List<XWPFTableCell> cells = rowLast.getTableCells();
-				XWPFTableCell cell2 = cells.get(1);
-
-				styleRow = styleRow(rowLast);
-
-				replaceTextInCellTable(cell2, cell2.getParagraphs().get(0).getText(), "NGUYEN VAN THANH");
-
-				for (int i = 0; i < table.getRows().size(); i++) {
-
-					if ("1".equals(table.getRows().get(i).getCell(0).getText())) {
-						deleteRowInTable(table, i, 19);
-						break;
+			} else {
+				XWPFTable xwpfTable = (XWPFTable) element;
+				for (XWPFTableRow row : xwpfTable.getRows()) {
+					for (XWPFTableCell cell : row.getTableCells()) {
+						if (cell.getText().contains("Không")) {
+							if (cell.getParagraphs().get(0).getRuns().size() > 1) {
+								System.out.println(cell.getParagraphs().get(0).getRuns().size() + " : "
+										+ cell.getParagraphs().get(0).getRuns().get(0).getText(0));
+								cell.getParagraphs().get(0).getRuns().get(0)
+										.setText(new Character((char) 8721).toString(), 0);
+								cell.getParagraphs().get(0).getRuns().get(1)
+										.setText(new Character((char) 8721).toString(), 0);
+								cell.getParagraphs().get(0).getRuns().get(2)
+										.setText(new Character((char) 8721).toString(), 0);
+								cell.getParagraphs().get(0).getRuns().get(3)
+										.setText(new Character((char) 8721).toString(), 0);
+								cell.getParagraphs().get(0).getRuns().get(4)
+										.setText(new Character((char) 8721).toString(), 0);
+							}
+						}
 					}
 				}
-
-				addNewRowInToTable(table, "1", "2", "3", "4", "5");
-				addNewRowInToTable(table, "1", "2", "3", "4", "5");
-				addNewRowInToTable(table, "1", "2", "3", "4", "5");
-				// table.getCTTbl().getTblPr().unsetTblBorders();
-				// table.getCTTbl().getTblPr().addNewTblBorders();
-				File file = new File("/home/thanh/Documents/Unit2.docx");
-				file.createNewFile();
-				FileOutputStream fos = new FileOutputStream("/home/thanh/Documents/Unit2.docx");
-				// PdfConverter.getInstance().convert(document,new
-				// FileOutputStream("/home/thanh/Documents/Unitf.pdf"),null);
-
-				document.write(fos);
-				word2PDF(new FileInputStream("/home/thanh/Documents/Unit2.docx"),
-						new FileOutputStream("/home/thanh/Documents/Unitf.pdf"));
-				fos.close();
 			}
 		}
+		FileOutputStream fos = new FileOutputStream("/home/thanh/Documents/Unit2.docx");
+		document.write(fos);
+		fos.close();
 
 	}
 
@@ -151,6 +139,13 @@ public class App {
 	}
 
 	/**
+	 * <pre>
+	 * Deprecated: because:
+	 * replace string in cell, but string = many XWPFRun in cell
+	 * so can string not in one XWPFRun.
+	 * => Replace in XWPFRun
+	 * </pre>
+	 * 
 	 * Word document bao gom List<IBodyElement> IBodyElement -> [XWPFParagraph]
 	 * | [XWPFTable]
 	 * 
@@ -159,6 +154,7 @@ public class App {
 	 * @param oldChar
 	 * @param newChar
 	 */
+	@Deprecated
 	static void replaceTextInParagrap(XWPFParagraph xwpfParagraph, String oldChar, String newChar) {
 
 		if (xwpfParagraph == null) {
@@ -178,6 +174,19 @@ public class App {
 	}
 
 	// Using replace text in cell
+	/**
+	 * <pre>
+	 * Deprecated: because:
+	 * replace string in cell, but string = many XWPFRun in cell
+	 * so can string not in one XWPFRun.
+	 * => Replace in XWPFRun
+	 * </pre>
+	 * 
+	 * @param tableCell
+	 * @param oldChar
+	 * @param newChar
+	 */
+	@Deprecated
 	static void replaceTextInCellTable(XWPFTableCell tableCell, String oldChar, String newChar) {
 
 		List<XWPFParagraph> xwpfParagraphs = tableCell.getParagraphs();
@@ -252,7 +261,6 @@ public class App {
 	 * @param args
 	 *            ~ List tham so cho 1 row
 	 */
-	@SuppressWarnings("deprecation")
 	static void addNewRowInToTable(XWPFTable xwpfTable, String... args) {
 
 		XWPFTableRow row = xwpfTable.createRow();
