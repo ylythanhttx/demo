@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +24,14 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.apache.xmlbeans.SchemaType;
+import org.apache.xmlbeans.XmlException;
+import org.apache.xmlbeans.XmlObject;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcBorders;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STBorder;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.impl.CTRImpl;
 
 /**
  * Hello world!
@@ -56,11 +61,16 @@ public class App {
 	static List<Map<String, Object>> styleRow = null;
 
 	@SuppressWarnings("resource")
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, XmlException {
 
 		System.out.println(new Character((char) 9824).toString());
+		System.out.println(new Character((char) 9744).toString());
+		System.out.println(new Character((char) 9745).toString());
+		System.out.println(new Character((char) 9660).toString());
+		System.out.println(new Character((char) 61608).toString());
+		
 
-		FileInputStream fis = new FileInputStream("/home/thanh/Documents/TIFF-2QUESTION.docx");
+		FileInputStream fis = new FileInputStream("C:/Users/android/Documents/E-Com/TIF-1.docx");
 		XWPFDocument document = new XWPFDocument(fis);
 
 		List<IBodyElement> lst = document.getBodyElements();
@@ -75,29 +85,72 @@ public class App {
 				}
 			} else {
 				XWPFTable xwpfTable = (XWPFTable) element;
-				for (XWPFTableRow row : xwpfTable.getRows()) {
-					for (XWPFTableCell cell : row.getTableCells()) {
-						if (cell.getText().contains("Không")) {
-							if (cell.getParagraphs().get(0).getRuns().size() > 1) {
-								System.out.println(cell.getParagraphs().get(0).getRuns().size() + " : "
-										+ cell.getParagraphs().get(0).getRuns().get(0).getText(0));
-								cell.getParagraphs().get(0).getRuns().get(0)
-										.setText(new Character((char) 8721).toString(), 0);
-								cell.getParagraphs().get(0).getRuns().get(1)
-										.setText(new Character((char) 8721).toString(), 0);
-								cell.getParagraphs().get(0).getRuns().get(2)
-										.setText(new Character((char) 8721).toString(), 0);
-								cell.getParagraphs().get(0).getRuns().get(3)
-										.setText(new Character((char) 8721).toString(), 0);
-								cell.getParagraphs().get(0).getRuns().get(4)
-										.setText(new Character((char) 8721).toString(), 0);
+				boolean[] as = new boolean[]{true,true,false,true,false};
+				int x = 0;
+				parent: for (int ii = 0; ii < xwpfTable.getRows().size(); ii++) {
+					
+					for (int j = 0; j<xwpfTable.getRows().get(ii).getTableCells().size(); j++ ) {
+
+						if (xwpfTable.getRows().get(ii).getTableCells().get(j).getText().contains("Không") && xwpfTable.getRows().get(ii).getTableCells().get(j).getText().contains("Có")) {
+							// System.out.println(cell.getParagraphs().get(0).getRuns().size());
+							XWPFRun run = xwpfTable.getRows().get(ii).getTableCells().get(j).getParagraphs().get(0).getRuns().get(0);
+							xwpfTable.getRows().get(ii).getTableCells().get(j).getParagraphs().get(0);
+							run.getText(0);
+							/*System.out.println(run.getCTR());
+							SchemaType schemaType = run.getCTR().schemaType();
+							CTRImpl ctrImpl = new CTRImpl(schemaType);
+							System.out.println(ctrImpl);
+							XWPFRun xwpfRun = null;
+							String xml = run.getCTR().toString();
+							xwpfRun.getCTR().set(XmlObject.Factory.parse(xml));*/
+							System.out.println();
+							System.out.println();
+							System.out.println();
+							System.out.println();
+							
+							String xml = 
+									" <xml-fragment w:rsidRPr=\"000D46AC\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\"> "+ 
+									"  <w:rPr> "+
+									 "  <w:rFonts w:ascii=\"Arial\" w:hAnsi=\"Arial\" w:cs=\"Arial\"/> "+
+									  "  <w:sz w:val=\"24\"/> "+
+									   " <w:szCs w:val=\"24\"/> "+
+									   " <w:shd w:val=\"clear\" w:color=\"auto\" w:fill=\"FDE9D9\" w:themeFill=\"accent6\" w:themeFillTint=\"33\"/> "+
+									  " </w:rPr> "+
+									 " <w:sym w:font=\"Wingdings\" w:char=\"00D7\"/> "+
+									" </xml-fragment> ";
+							String xml1 = 
+									" <xml-fragment w:rsidRPr=\"000D46AC\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\"> "+ 
+									 " <w:sym w:font=\"Wingdings\" w:char=\"00D7\"/> "+
+									" </xml-fragment> ";
+							
+							// Char code hexa in font wingding symbol word
+							String xml2 = 
+									" <xml-fragment w:rsidRPr=\"000D46AC\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\"> "+ 
+									 " <w:sym w:font=\"Wingdings\" w:char=\"0026\"/> "+
+									" </xml-fragment> ";
+							
+							System.out.println(XmlObject.Factory.parse(run.getCTR().toString()));
+//							run.getCTR().set(XmlObject.Factory.parse(run.getCTR().toString()));
+//							run.getCTR().set(XmlObject.Factory.parse("<xml-fragment />"));
+							run.getCTR().set(XmlObject.Factory.parse(xml));
+							run.getCTR().set(XmlObject.Factory.parse(xml2));
+							if (xwpfTable.getRows().get(ii).getTableCells().get(j).getParagraphs().get(0).getRuns().size() > 1) {
+								if (as[ii-1]) {
+									x++;
+									xwpfTable.getRows().get(ii).getTableCells().get(j).getParagraphs().get(0).removeRun(0);
+									xwpfTable.getRows().get(ii).getTableCells().get(j).getParagraphs().get(0).removeRun(5);
+								}else{
+									xwpfTable.getRows().get(ii).getTableCells().get(j).getParagraphs().get(0).removeRun(1);
+									xwpfTable.getRows().get(ii).getTableCells().get(j).getParagraphs().get(0).removeRun(4);
+								}
 							}
+//							 break parent;
 						}
 					}
 				}
 			}
 		}
-		FileOutputStream fos = new FileOutputStream("/home/thanh/Documents/Unit2.docx");
+		FileOutputStream fos = new FileOutputStream("C:/Users/android/Documents/E-Com/TIF-1-OUT.docx.docx");
 		document.write(fos);
 		fos.close();
 
