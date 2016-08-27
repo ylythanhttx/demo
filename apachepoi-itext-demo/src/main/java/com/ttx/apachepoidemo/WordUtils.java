@@ -75,7 +75,7 @@ public class WordUtils {
 			xwpfRun = xwpfParagraph.createRun();
 			xwpfRun.setText(text, 0);
 		} else {
-			xwpfParagraph.getRuns().get(0).setText(text, 0);
+			xwpfParagraph.getRuns().get(0).setText(" " + text, 0);
 		}
 	}
 
@@ -99,9 +99,8 @@ public class WordUtils {
 	}
 
 	/**
-	 * Thay thế các chuỗi được đánh dấu trong các cell table
-	 * regex: ngăn cách giữa key và value.
-	 * ex proposalNo::180000000 -> [\\:]{2}
+	 * Thay thế các chuỗi được đánh dấu trong các cell table regex: ngăn cách
+	 * giữa key và value. ex proposalNo::180000000 -> [\\:]{2}
 	 * 
 	 * @param xwpfTable
 	 * @param strings

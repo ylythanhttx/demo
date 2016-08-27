@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
@@ -269,7 +270,7 @@ public class PruSingleCode {
 				for (XWPFTableRow xwpfTableRow : xwpfTable.getRows()) {
 					for (XWPFTableCell xwpfTableCell : xwpfTableRow.getTableCells()) {
 						if (xwpfTableCell.getText().trim().equals(key.trim())) {
-							WordUtils.setTextInToXWPFTableCell(xwpfTableCell, value);
+							setTextInToXWPFTableCell(xwpfTableCell, value);
 						}
 					}
 				}
@@ -308,7 +309,7 @@ public class PruSingleCode {
 
 		XWPFTableRow xwpfTableRow = xwpfTable.getRow(1);
 		String xml = xwpfTableRow.getCtRow().toString();
-		WordUtils.removeXWPFTableRow(xwpfTable, rowTemplate);
+		removeXWPFTableRow(xwpfTable, rowTemplate);
 
 		int temp = 0;
 		for (int i = 0; i < datas.size(); i++) {
@@ -318,7 +319,7 @@ public class PruSingleCode {
 			XWPFTableRow tableRow = new XWPFTableRow(row, xwpfTable);
 			xwpfTable.getRows().add(index + temp, tableRow);
 			for (int x = 0; x < tableRow.getTableCells().size(); x++) {
-				WordUtils.setTextInToXWPFTableCell(tableRow.getTableCells().get(x), datas.get(i)[x].toString());
+				setTextInToXWPFTableCell(tableRow.getTableCells().get(x), datas.get(i)[x].toString());
 			}
 			temp++;
 		}
@@ -348,5 +349,44 @@ public class PruSingleCode {
 			}
 		}
 		return null;
+	}
+	
+	static void setTextInToXWPFTableCell(XWPFTableCell xwpfTableCell, String text) {
+
+		while (xwpfTableCell.getParagraphs().size() > 1) {
+			xwpfTableCell.removeParagraph(0);
+		}
+		setTextInToXWPFParagraph(xwpfTableCell.getParagraphs().get(0), text);
+	}
+	
+	static void setTextInToXWPFParagraph(XWPFParagraph xwpfParagraph, String text) {
+
+		while (xwpfParagraph.getRuns().size() > 1) {
+			xwpfParagraph.removeRun(0);
+		}
+		XWPFRun xwpfRun = null;
+		if (xwpfParagraph.getRuns() == null || xwpfParagraph.getRuns().size() == 0) {
+			xwpfRun = xwpfParagraph.createRun();
+			xwpfRun.setText(text, 0);
+		} else {
+			xwpfParagraph.getRuns().get(0).setText(" " + text, 0);
+		}
+	}
+	
+	static void removeXWPFTableRow(XWPFTable xwpfTable, int... index) {
+
+		for (int s = 0; s < index.length; s++) {
+			for (int x = s + 1; x < index.length; x++) {
+				int varS = index[s];
+				int varX = index[x];
+				if (index[s] > index[x]) {
+					index[s] = varX;
+					index[x] = varS;
+				}
+			}
+		}
+		for (int r = 0; r < index.length; r++) {
+			xwpfTable.removeRow(index[r] - r);
+		}
 	}
 }
