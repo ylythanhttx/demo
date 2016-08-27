@@ -11,8 +11,6 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
-import com.itextpdf.xmp.impl.Utils;
-
 public class HelloWorldToPDF {
 
 	public static void main(String[] args) throws Exception {
@@ -20,7 +18,7 @@ public class HelloWorldToPDF {
 		createTable();
 	}
 
-	private static void createPDF() {
+	static void createPDF() {
 		try {
 			long start = System.currentTimeMillis();
 
