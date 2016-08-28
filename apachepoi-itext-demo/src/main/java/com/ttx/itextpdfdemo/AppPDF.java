@@ -93,13 +93,15 @@ public class AppPDF {
 
 		StringWriter stringWriter = new StringWriter();
 
+		// Set output pdf
 		FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
 		FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
 		foUserAgent.setProducer(AppPDF.class.getName());
 		Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent,
 				new FileOutputStream(System.getProperty("user.dir") + "/file/out/a.pdf"));
 		Result res = new SAXResult(fop.getDefaultHandler());
-
+		// End Set output pdf
+		
 		// Template <fo:>
 		Transformer transformer = TransformerFactory.newInstance()
 				.newTransformer(new StreamSource(new File("C:/Users/android/Documents/E-Com/Word2FO.xsl")));
