@@ -35,6 +35,10 @@ import org.apache.poi.util.XMLHelper;
  * https://msdn.microsoft.com/en-us/library/aa203691.aspx Docx stylesheet:
  * https://msdn.microsoft.com/en-us/library/ee872374(v=office.12).aspx
  * 
+ * font: http://xmlgraphics.apache.org/fop/trunk/output.html#afp-configuration
+ * 
+ * source: http://svn.apache.org/viewvc/xmlgraphics/fop/trunk/fop/examples/embedding/java/embedding/ExampleFO2PDF.java?view=markup
+ * 
  * @author android
  *
  */
@@ -99,6 +103,7 @@ public class AppPDF {
 		foUserAgent.setProducer(AppPDF.class.getName());
 		Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent,
 				new FileOutputStream(System.getProperty("user.dir") + "/file/out/a.pdf"));
+//		fopFactory.setUserConfig(new File("D:/Developer/MyGit/demo/apachepoi-itext-demo/src/main/java/com/ttx/itextpdfdemo/font.xml"));
 		Result res = new SAXResult(fop.getDefaultHandler());
 		// End Set output pdf
 		
