@@ -6,8 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
@@ -15,18 +13,16 @@ import javax.xml.transform.Source;
 //JAXP
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.fop.apps.FOPException;
+import org.apache.fop.apps.FOUserAgent;
 // FOP
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
-import org.apache.fop.apps.FormattingResults;
 import org.apache.fop.apps.MimeConstants;
-import org.apache.fop.apps.PageSequenceResults;
 import org.apache.poi.hwpf.HWPFDocumentCore;
 import org.apache.poi.hwpf.converter.WordToFoConverter;
 import org.apache.poi.hwpf.converter.WordToFoUtils;
@@ -36,8 +32,8 @@ import org.apache.poi.util.XMLHelper;
  * https://technology.amis.nl/2006/03/22/converting-word-documents-to-xsl-fo-and
  * -onwards-to-pdf/ http://www.ibm.com/developerworks/library/x-xstrmfo/
  * http://xmlgraphics.apache.org/fop/fo.html
- * https://msdn.microsoft.com/en-us/library/aa203691.aspx
- * Docx stylesheet: https://msdn.microsoft.com/en-us/library/ee872374(v=office.12).aspx
+ * https://msdn.microsoft.com/en-us/library/aa203691.aspx Docx stylesheet:
+ * https://msdn.microsoft.com/en-us/library/ee872374(v=office.12).aspx
  * 
  * @author android
  *
@@ -67,17 +63,18 @@ public class AppPDF {
 			Source src = new StreamSource(fo);
 			Result res = new SAXResult(fop.getDefaultHandler());
 			transformer.transform(src, res);
-			/*FormattingResults foResults = fop.getResults();
-			List pageSequences = foResults.getPageSequences();
-			for (Iterator it = pageSequences.iterator(); it.hasNext();) {
-				PageSequenceResults pageSequenceResults = (PageSequenceResults) it.next();
-				System.out
-						.println("PageSequence "
-								+ (String.valueOf(pageSequenceResults.getID()).length() > 0
-										? pageSequenceResults.getID() : "  id")
-								+ " generated " + pageSequenceResults.getPageCount() + " pages.");
-			}
-			System.out.println("Generated " + foResults.getPageCount() + " pages in total.");*/
+			/*
+			 * FormattingResults foResults = fop.getResults(); List
+			 * pageSequences = foResults.getPageSequences(); for (Iterator it =
+			 * pageSequences.iterator(); it.hasNext();) { PageSequenceResults
+			 * pageSequenceResults = (PageSequenceResults) it.next(); System.out
+			 * .println("PageSequence " +
+			 * (String.valueOf(pageSequenceResults.getID()).length() > 0 ?
+			 * pageSequenceResults.getID() : "  id") + " generated " +
+			 * pageSequenceResults.getPageCount() + " pages."); }
+			 * System.out.println("Generated " + foResults.getPageCount() +
+			 * " pages in total.");
+			 */
 
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
@@ -96,18 +93,28 @@ public class AppPDF {
 
 		StringWriter stringWriter = new StringWriter();
 
-		Transformer transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(new File("C:/Users/android/Documents/E-Com/document.xslt")));
+		FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
+		FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
+		foUserAgent.setProducer(AppPDF.class.getName());
+		Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent,
+				new FileOutputStream(System.getProperty("user.dir") + "/file/out/a.pdf"));
+		Result res = new SAXResult(fop.getDefaultHandler());
+
+		// Template <fo:>
+		Transformer transformer = TransformerFactory.newInstance()
+				.newTransformer(new StreamSource(new File("C:/Users/android/Documents/E-Com/Word2FO.xsl")));
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 		// transformer.setOutputProperty(OutputKeys.METHOD, "xml-fo");
-		// transformer.transform(new DOMSource(wordToFoConverter.getDocument()),
-		// new StreamResult(
-		// new
-		// FileOutputStream("D:\\Developer\\STSs\\workspaces\\w1\\doc4j-demo\\file\\out\\TIFF-5-OUT.fo")));
-		transformer.transform(
-				new StreamSource(new File("C:/Users/android/Documents/E-Com/document.xslt")),
-				new StreamResult(new FileOutputStream(
-						"D:\\Developer\\STSs\\workspaces\\w1\\doc4j-demo\\file\\out\\TIFF-5-OUT.fo")));
+		// arg[1] data binding template fo
+		transformer.transform(new StreamSource(new File("C:/Users/android/Documents/E-Com/TIFF-5-2003.xml")), res);
+		/*
+		 * transformer.transform( new StreamSource(new
+		 * File("C:/Users/android/Documents/E-Com/document.xslt")), new
+		 * StreamResult(new FileOutputStream(
+		 * "D:\\Developer\\STSs\\workspaces\\w1\\doc4j-demo\\file\\out\\TIFF-5-OUT.fo"
+		 * )));
+		 */
 
 		String result = stringWriter.toString();
 		return result;
