@@ -1,33 +1,115 @@
 package com.ttx.itextpdfdemo;
 
-import java.io.FileInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.util.Iterator;
+import java.util.List;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+//JAXP
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
+import org.apache.fop.apps.FOPException;
+// FOP
+import org.apache.fop.apps.Fop;
+import org.apache.fop.apps.FopFactory;
+import org.apache.fop.apps.FormattingResults;
+import org.apache.fop.apps.MimeConstants;
+import org.apache.fop.apps.PageSequenceResults;
+import org.apache.poi.hwpf.HWPFDocumentCore;
+import org.apache.poi.hwpf.converter.WordToFoConverter;
+import org.apache.poi.hwpf.converter.WordToFoUtils;
+import org.apache.poi.util.XMLHelper;
+
+/**
+ * https://technology.amis.nl/2006/03/22/converting-word-documents-to-xsl-fo-and
+ * -onwards-to-pdf/ http://www.ibm.com/developerworks/library/x-xstrmfo/
+ * http://xmlgraphics.apache.org/fop/fo.html
+ * https://msdn.microsoft.com/en-us/library/aa203691.aspx
+ * Docx stylesheet: https://msdn.microsoft.com/en-us/library/ee872374(v=office.12).aspx
+ * 
+ * @author android
+ *
+ */
 public class AppPDF {
 
 	public static void main(String[] args) throws Exception {
 
-		FileInputStream fis = new FileInputStream("/home/thanh/Documents/Unit.pdf");
-		PdfReader pdfReader = new PdfReader(fis);
-		PdfStamper pdfStamper = new PdfStamper(pdfReader, new FileOutputStream("D:\\ModifiedTestFile.pdf"));
-		Document document = new Document();
-
-		// Get the number of pages in pdf.
-		int pages = pdfReader.getNumberOfPages();
-		// Iterate the pdf through pages.
-		for (int i = 1; i <= pages; i++) {
-			// Contain the pdf data.
-			PdfContentByte pageContentByte = pdfStamper.getOverContent(i);
-			
-
-		}
-		document.open();
+		 getFoText("C:/Users/android/Documents/E-Com/TIFF-2.doc");
+//		convertFO2PDF(new File("D:\\Developer\\STSs\\workspaces\\w1\\doc4j-demo\\file\\out\\TIFF-5-OUT.fo"),
+//				new File(System.getProperty("user.dir") + "/file/out/a.pdf"));
 	}
 
+	public static void convertFO2PDF(File fo, File pdf) throws IOException, FOPException {
+
+		OutputStream out = null;
+
+		try {
+			out = new FileOutputStream(pdf);
+			out = new BufferedOutputStream(out);
+			FopFactory foFactory = FopFactory.newInstance(new File(".").toURI());
+			Fop fop = foFactory.newFop((MimeConstants.MIME_PDF), foFactory.newFOUserAgent(), out);
+			TransformerFactory factory = TransformerFactory.newInstance();
+			Transformer transformer = factory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			Source src = new StreamSource(fo);
+			Result res = new SAXResult(fop.getDefaultHandler());
+			transformer.transform(src, res);
+			/*FormattingResults foResults = fop.getResults();
+			List pageSequences = foResults.getPageSequences();
+			for (Iterator it = pageSequences.iterator(); it.hasNext();) {
+				PageSequenceResults pageSequenceResults = (PageSequenceResults) it.next();
+				System.out
+						.println("PageSequence "
+								+ (String.valueOf(pageSequenceResults.getID()).length() > 0
+										? pageSequenceResults.getID() : "  id")
+								+ " generated " + pageSequenceResults.getPageCount() + " pages.");
+			}
+			System.out.println("Generated " + foResults.getPageCount() + " pages in total.");*/
+
+		} catch (Exception e) {
+			e.printStackTrace(System.err);
+			System.exit(-1);
+		} finally {
+			out.close();
+		}
+	}
+
+	static String getFoText(final String sampleFileName) throws Exception {
+		HWPFDocumentCore hwpfDocument = WordToFoUtils.loadDoc(new File(sampleFileName));
+
+		WordToFoConverter wordToFoConverter = new WordToFoConverter(
+				XMLHelper.getDocumentBuilderFactory().newDocumentBuilder().newDocument());
+		wordToFoConverter.processDocument(hwpfDocument);
+
+		StringWriter stringWriter = new StringWriter();
+
+		Transformer transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(new File("C:/Users/android/Documents/E-Com/document.xslt")));
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+		// transformer.setOutputProperty(OutputKeys.METHOD, "xml-fo");
+		// transformer.transform(new DOMSource(wordToFoConverter.getDocument()),
+		// new StreamResult(
+		// new
+		// FileOutputStream("D:\\Developer\\STSs\\workspaces\\w1\\doc4j-demo\\file\\out\\TIFF-5-OUT.fo")));
+		transformer.transform(
+				new StreamSource(new File("C:/Users/android/Documents/E-Com/document.xslt")),
+				new StreamResult(new FileOutputStream(
+						"D:\\Developer\\STSs\\workspaces\\w1\\doc4j-demo\\file\\out\\TIFF-5-OUT.fo")));
+
+		String result = stringWriter.toString();
+		return result;
+	}
 }
