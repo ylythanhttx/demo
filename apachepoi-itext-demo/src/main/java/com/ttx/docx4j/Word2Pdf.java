@@ -1,27 +1,13 @@
 package com.ttx.docx4j;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
 
-import org.docx4j.convert.out.pdf.viaXSLFO.PdfSettings;
-import org.docx4j.fonts.IdentityPlusMapper;
-import org.docx4j.fonts.Mapper;
-import org.docx4j.fonts.PhysicalFont;
-import org.docx4j.fonts.PhysicalFonts;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
- 
 public class Word2Pdf {
-    @SuppressWarnings("rawtypes")
 	public static void main(String[] args) {
         try {
              
-            long start = System.currentTimeMillis();
- 
+           /* long start = System.currentTimeMillis();
+            PhysicalFonts.setRegex(".*"); 
             InputStream is = new FileInputStream(
-                    new File("/home/thanh/Documents/Unit.docx"));
+                    new File("C:/Users/android/Documents/E-Com" + "/TIFF-5.docx"));
             WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage
                     .load(is);
             List sections = wordMLPackage.getDocumentModel().getSections();
@@ -42,12 +28,14 @@ public class Word2Pdf {
             PdfSettings pdfSettings = new PdfSettings();
             org.docx4j.convert.out.pdf.PdfConversion conversion = new org.docx4j.convert.out.pdf.viaXSLFO.Conversion(
                     wordMLPackage);
+            
+            ((org.docx4j.convert.out.pdf.viaXSLFO.Conversion) conversion).setSaveFO(new java.io.File("C:/Users/android/Documents/E-Com" + "/TIFF-5.docx" + ".fo"));
  
             OutputStream out = new FileOutputStream(new File(
-                    "/home/thanh/Documents/Unit3.pdf"));
+            		"C:/Users/android/Documents/E-Com" + "/TIFF-5-OUT.pdf"));
             conversion.output(out, pdfSettings);
             System.err.println("Time taken to Generate pdf  "
-                    + (System.currentTimeMillis() - start) + "ms");
+                    + (System.currentTimeMillis() - start) + "ms");*/
  
         } catch (Exception e) {
             e.printStackTrace();

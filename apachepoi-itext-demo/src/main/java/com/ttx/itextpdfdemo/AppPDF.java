@@ -23,9 +23,9 @@ import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
-import org.apache.poi.hwpf.HWPFDocumentCore;
-import org.apache.poi.hwpf.converter.WordToFoConverter;
-import org.apache.poi.hwpf.converter.WordToFoUtils;
+//import org.apache.poi.hwpf.HWPFDocumentCore;
+//import org.apache.poi.hwpf.converter.WordToFoConverter;
+//import org.apache.poi.hwpf.converter.WordToFoUtils;
 import org.apache.poi.util.XMLHelper;
 
 /**
@@ -89,7 +89,7 @@ public class AppPDF {
 	}
 
 	static String getFoText(final String sampleFileName) throws Exception {
-		HWPFDocumentCore hwpfDocument = WordToFoUtils.loadDoc(new File(sampleFileName));
+		/*HWPFDocumentCore hwpfDocument = WordToFoUtils.loadDoc(new File(sampleFileName));
 
 		WordToFoConverter wordToFoConverter = new WordToFoConverter(
 				XMLHelper.getDocumentBuilderFactory().newDocumentBuilder().newDocument());
@@ -109,21 +109,22 @@ public class AppPDF {
 		
 		// Template <fo:>
 		Transformer transformer = TransformerFactory.newInstance()
-				.newTransformer(new StreamSource(new File("C:/Users/android/Documents/E-Com/Word2FO.xsl")));
+				.newTransformer(new StreamSource(new File("D:/Developer/STSs/workspaces/w1/doc4j-demo/file/out/TIFF-5-OUT.xml")));
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 		// transformer.setOutputProperty(OutputKeys.METHOD, "xml-fo");
 		// arg[1] data binding template fo
-		transformer.transform(new StreamSource(new File("C:/Users/android/Documents/E-Com/TIFF-5-2003.xml")), res);
-		/*
+		transformer.transform(new StreamSource(new File("C:/Users/android/Documents/E-Com/TIFF-5.xml")), res);
+		
 		 * transformer.transform( new StreamSource(new
 		 * File("C:/Users/android/Documents/E-Com/document.xslt")), new
 		 * StreamResult(new FileOutputStream(
 		 * "D:\\Developer\\STSs\\workspaces\\w1\\doc4j-demo\\file\\out\\TIFF-5-OUT.fo"
 		 * )));
-		 */
+		 
 
 		String result = stringWriter.toString();
-		return result;
+		return result;*/
+		return null;
 	}
 }
