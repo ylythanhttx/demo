@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Sample Category"
+            id="e-pl-hello.commands.category">
+      </category>
+      
+      <command
+            name="Toolbar Command"
+            categoryId="e-pl-hello.commands.category"
+            id="e-pl-hello.commands.sampleCommand">
+      </command>
+      
+      <command
+            name="Toolbar Command"
+            categoryId="e-pl-hello.commands.category"
+            id="e-pl-hello.commands.toolbarCommand">
+      </command>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="e-pl-hello.commands.toolbarCommand"
+            class="eplhello.handlers.TestToolbarHandler">
+      </handler>
+
+      <handler
+            commandId="e-pl-hello.commands.sampleCommand"
+            class="eplhello.handlers.SampleHandler">
+      </handler>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="e-pl-hello.commands.sampleCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="M1+6"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="e-pl-hello.toolbars.helloToolbar">
+            <command
+                  commandId="e-pl-hello.commands.toolbarCommand"
+                  icon="icons/test_toolbar.gif"
+                  tooltip="Say hello world"
+                  id="e-pl-hello.toolbars.toolbarCommand">
+            </command>
+         </toolbar>
+      </menuContribution>
+               
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               label="Sample Menu"
+               mnemonic="M"
+               id="e-pl-hello.menus.sampleMenu">
+            <command
+                  commandId="e-pl-hello.commands.sampleCommand"
+                  mnemonic="S"
+                  id="e-pl-hello.menus.sampleCommand">
+            </command>
+         </menu>
+      </menuContribution>
+
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+         <category 
+             name="Hello World"
+             id="e-pl-hello.viewa.category">
+         </category>
+	      <view
+	            name="Hello World"
+	            icon="icons/sample.gif"
+	            category="e-pl-hello.viewa.category"
+	            class="eplhello.views.HelloworldView"
+	            id="e-pl-hello.views.HelloWorldView">
+	      </view>
+   </extension>
+   
+	<extension point="org.eclipse.ui.preferencePages">
+	 	<page id="BadWordsPreferencePage"
+	 		name="Bad Words"
+	    		class="eplhello.preferences.BadWordsPreferencePage">
+	   	</page>
+	   	
+	 	<page id="BadWordsColorPreferencePage"
+	  	      	name="Colors"
+		      	class="eplhello.preferences.BadWordsColorPreferencePage"
+			category="BadWordsPreferencePage">
+	   	</page>
+	</extension>
+
+</plugin>
