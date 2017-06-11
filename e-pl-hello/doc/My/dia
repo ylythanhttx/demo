@@ -1,0 +1,3 @@
+Create project Pl: Create project with template (... add Builder [.project])
+Prefrences Pl: Store value config workspace.
+Builders: Build project with Builder class, useing value setting from Preferences.
