@@ -1,0 +1,29 @@
+1  Command: cd C:\Users ==> ls
+   Java: 
+   		//Process p = Runtime.getRuntime().exec("ls", null, new File("C:/Users"));
+   		Process p = new ProcessBuilder("ls").directory(new File("C:/Users")).start();
+		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		String line;
+		while ((line = in.readLine()) != null) {
+		    System.out.println(line);
+		}
+2  Get Java version: java -version
+   Java:
+		ProcessBuilder pb = new ProcessBuilder("java", "-version");
+		pb.redirectErrorStream(true);
+		Process p = pb.start();
+		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		String line;
+		while ((line = in.readLine()) != null) {
+		    System.out.println(line);
+		}   		
+3  Get make help: make --help
+   Java: 
+		ProcessBuilder pb = new ProcessBuilder("make", "--help");
+		pb.redirectErrorStream(true);
+		Process p = pb.start();
+		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		String line;
+		while ((line = in.readLine()) != null) {
+		    System.out.println(line);
+		}      		
