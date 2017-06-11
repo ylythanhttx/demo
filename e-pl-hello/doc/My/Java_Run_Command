@@ -32,13 +32,19 @@
 		ProcessBuilder pb = new ProcessBuilder("mvn.cmd", "-version");
 		pb.redirectErrorStream(true);
 		Process p = pb.start();
-4  maven clean: mvn clean
+5  maven clean: mvn clean
    Java:
 		ProcessBuilder pb = new ProcessBuilder("mvn.cmd", "clean").directory(new File("/path/to/dirPom"));
 		pb.redirectErrorStream(true);
 		Process p = pb.start();
-4  maven install: mvn install
+6  maven install: mvn install
    Java:
 		ProcessBuilder pb = new ProcessBuilder("mvn.cmd", "install").directory(new File("/path/to/dirPom"));
 		pb.redirectErrorStream(true);
-		Process p = pb.start();				   		
+		Process p = pb.start();		
+		
+7  Run make file with option: make -f /path/to/dirFile/[file] [option]
+   Java:
+		ProcessBuilder pb = new ProcessBuilder("make", "-f", "[file]", [option]).directory(new File("/path/to/dirFile"));
+		pb.redirectErrorStream(true);
+		Process p = pb.start();						   		
