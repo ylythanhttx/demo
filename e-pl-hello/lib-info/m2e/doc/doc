@@ -1,0 +1,22 @@
+Dung m2e Plugin de xem cac ui (Dung Decompile de xem  code):
+  -       org.eclipse.m2e.core.ui_1.7.0.20160603-1933.jar
+          Extension: org.eclipse.ui.preferencePages - preferencePages
+          Extension: org.eclipse.ui.newWizards - new Project Wizard (Create project)
+          Extension: org.eclipse.ui.commands - Command
+          Extension: org.eclipse.ui.handlers - Handle Command
+          
+          
+  -       org.eclipse.m2e.core_1.7.0.20160603-1933.jar   
+          Extension: org.eclipse.core.resources.builders - Builders (.project, Preferences > Builders)  
+          Extension: org.eclipse.core.resources.natures - natures (.project, Command Build)       
+
+
+  -       org.eclipse.m2e.launching_1.7.0.20160603-1933.jar      
+          Extension: org.eclipse.debug.ui.launchShortcuts:   Using the ﻿ILaunchShortcut for ISelections and IEditorParts
+          
+          Extension: org.eclipse.debug.core.launchConfigurationTypes:   Handle Run/Debug Configuration
+          Extension: org.eclipse.debug.ui.launchConfigurationTabGroups:   Handle UI for Run/Debug Configuration
+          Extension: org.eclipse.debug.ui.launchConfigurationTypeImages:   Handle Image Run/Debug Configuration
+         
+   
+   
