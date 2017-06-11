@@ -27,3 +27,18 @@
 		while ((line = in.readLine()) != null) {
 		    System.out.println(line);
 		}      		
+4  maven version: mvn -version
+   Java:
+		ProcessBuilder pb = new ProcessBuilder("mvn.cmd", "-version");
+		pb.redirectErrorStream(true);
+		Process p = pb.start();
+4  maven clean: mvn clean
+   Java:
+		ProcessBuilder pb = new ProcessBuilder("mvn.cmd", "clean").directory(new File("/path/to/dirPom"));
+		pb.redirectErrorStream(true);
+		Process p = pb.start();
+4  maven install: mvn install
+   Java:
+		ProcessBuilder pb = new ProcessBuilder("mvn.cmd", "install").directory(new File("/path/to/dirPom"));
+		pb.redirectErrorStream(true);
+		Process p = pb.start();				   		
