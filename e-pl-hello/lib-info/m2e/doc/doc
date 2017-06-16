@@ -1,6 +1,7 @@
 Dung m2e Plugin de xem cac ui (Dung Decompile de xem  code):
   -       org.eclipse.m2e.core.ui_1.7.0.20160603-1933.jar
           Extension: org.eclipse.ui.preferencePages - preferencePages
+          (Data store in: /path/to/WorkspaceDir/ .metadata\.plugins\org.eclipse.core.runtime\.settings\[plugin].prefs)
           Extension: org.eclipse.ui.newWizards - new Project Wizard (Create project)
           Extension: org.eclipse.ui.commands - Command
           Extension: org.eclipse.ui.handlers - Handle Command
@@ -14,9 +15,32 @@ Dung m2e Plugin de xem cac ui (Dung Decompile de xem  code):
   -       org.eclipse.m2e.launching_1.7.0.20160603-1933.jar      
           Extension: org.eclipse.debug.ui.launchShortcuts:   Using the ﻿ILaunchShortcut for ISelections and IEditorParts
           
-          Extension: org.eclipse.debug.core.launchConfigurationTypes:   Handle Run/Debug Configuration
+          Extension: org.eclipse.debug.core.launchConfigurationTypes:   Handle Run/Debug Configuration 
+          (Data Store in: /path/to/WorkspaceDir/ .metadata\.plugins\org.eclipse.debug.core\.launches)
           Extension: org.eclipse.debug.ui.launchConfigurationTabGroups:   Handle UI for Run/Debug Configuration
           Extension: org.eclipse.debug.ui.launchConfigurationTypeImages:   Handle Image Run/Debug Configuration
          
-   
-   
+  -		  Extension: org.eclipse.ui.propertyPages:   Handle Properties of Project 
+          Normal data stored in projectDir/.setting/{pluginId}.prefs
+          Ex:
+          Plugin jar: plugins\org.eclipse.jdt.ui_3.12.2.v20160929-0804.jar Handle propertyPages with name: [buildPathPageName=Java Build Path]
+          Data stored in org.eclipse.jdt.core.prefs
+    
+  -       Make break point at void org.eclipse.jface.preference.PreferenceDialog.createPageControl(IPreferencePage page, Composite parent)
+          where click preferencePages or propertyPages to view class handler (page.getClass())
+		  
+		  OR (void org.eclipse.jface.preference.PreferenceDialog.okPressed(), currentPage class)
+		  
+		  (CDT write C/C++ Build ByteArrayOutputStream org.eclipse.cdt.internal.core.settings.model.xml.XmlProjectDescriptionStorage.write(ICStorageElement element) throws CoreException)
+		  (CDT org.eclipse.cdt.managedbuilder.ui.properties.Page_head_build Handle C/C++ Build PropertyPages)
+  -       PreferencesStore Scope (void org.eclipse.core.internal.preferences.PreferencesService.initializeDefaultScopes())
+          Project: in project 	
+          Instance: in workspace 		
+          configure: in eclipse configuration folder  
+          Bundle: in (?)
+          with file name: Bundle-SymbolicName: [org.eclipse.core.resources] (MANIFEST.MF)
+          
+          IEclipsePreferences org.eclipse.core.internal.preferences.AbstractScope.getNode(String qualifier)
+          org.osgi.framework.Bundle org.eclipse.core.runtime.Plugin.getBundle()
+          IPreferenceStore org.eclipse.ui.plugin.AbstractUIPlugin.getPreferenceStore()
+           	
