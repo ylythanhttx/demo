@@ -1,0 +1,32 @@
+https://text.123doc.org/document/3479807-de-thi-duoc-dong-hoc-trac-nghiem-co-dap-an.htm
+ var text = $('.show_content_pc')[0].innerText;
+ /*text = '45. Yếu tố quan trọng nhất của hấp thu thuốc qua da là\n'
+text += 'Đề thi dược\n';
+ text += ' \n';
+text += ' \n';
+text += 'http://123doc.org/trang-ca-nhan-389180-de-thi-duoc.htm\n';
+ text += 'a. Loại tá dược\n';
+text += ' \n';
+text += '46. Dưới đây là các đại lượng liên quan đến tương đương sinh học ,ngoại trừ\n';
+*/
+ var arr = text.split('\n');
+ var rs = [];
+ var temp = [];
+for (var i = 0; i < arr.length; i++) {
+	
+	var line = arr[i];
+	if (/^[a-z]\.\s*$/i.test(line)) {
+		temp.push(line.replace(/^([a-z]\.).*$/i, '$1 '));
+    } else if (line.trim().length && temp.length) {
+		line = temp[0] + line;
+		temp.splice(0 , 1);
+		rs.push(line);
+    } else {
+		rs.push(line);
+    }
+}
+ var ht = '';
+for (var l in rs) {
+	ht += rs[l] + '\n';
+}
+console.log(ht);
